@@ -8,6 +8,7 @@
     </head>
 </head>
 <body>
+<div></div>
 <div id="container">Loading...</div>
 
 
@@ -17,6 +18,33 @@
 <script src = "js/json2/json2.js" type="text/javascript"></script>
 <script src = "js/backbone/backbone-min.js" type="text/javascript"></script>
 <script src = "person.js"></script>
+<script src = "form.js"></script>
+<script>
+    $(document).ready( function () {
+        var AppRouter = Backbone.Router.extend({routes:{
+            "posts/:id":"getPost",
+            ":action": "defaultRoute"
+
+        }});
+        var appRouter = new AppRouter();
+        var model = new PersonModel();
+        appRouter.on('route:getPost',function (id) {
+            var formView = new FormView({model:model});
+            var personView = new PersonView({model:model});
+            formView.render();
+            personView.render();
+        });
+        appRouter.on('route:defaultRoute', function (actions) {
+            $("#container").html("");
+            var personView = new PersonView({model:model});
+            personView.render();
+
+//            alert(actions);
+        });
+        Backbone.history.start();
+    })
+</script>
+
 <!--<script type="text/javascript">-->
     <!--var AppView = Backbone.View.extend({-->
         <!--el: '#container',-->
